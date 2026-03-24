@@ -25,6 +25,8 @@ Desktop.ini
 # IDE
 .idea/
 .vscode/
+.cursor
 
 # data
-data/actors/*
+data/actors/
+data/embeddings/
