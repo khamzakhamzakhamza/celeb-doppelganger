@@ -1,0 +1,30 @@
+# Node
+node_modules/
+dist/
+*.log
+npm-debug.log*
+.env
+.env.*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.eggs/
+
+# OS / Windows
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.idea/
+.vscode/
+
+# data
+data/actors/*
