@@ -6,6 +6,12 @@ npm-debug.log*
 .env
 .env.*
 
+# Vite / frontend build
+front/dist/
+front/.vite/
+front/coverage/
+*.local
+
 # Python
 .venv/
 venv/
