@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="profile.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#111111"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.50835204"
+     inkscape:cx="130.81486"
+     inkscape:cy="427.85311"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:lockguides="true" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect7"
+       style="fill:#747474;fill-opacity:0.4176707;stroke:#000000;stroke-width:0.264583;stroke-opacity:0"
+       d="M -0.52038167 -0.52038167 L -0.52038167 299.27166 L 16.598987 299.27166 A 88.721336 62.437485 0 0 1 16.184025 291.39823 A 88.721336 62.437485 0 0 1 107.14281 230.60918 A 88.721336 62.437485 0 0 1 193.56855 294.59029 L 193.5639 294.71741 A 88.721336 62.437485 0 0 1 193.15152 299.27166 L 212.35293 299.27166 L 212.35293 -0.52038167 L -0.52038167 -0.52038167 z M 106.40177 12.178585 A 73.596848 75.437004 0 0 1 178.11368 86.855164 L 178.1266 86.855164 L 178.1266 148.31601 L 178.11471 148.31601 A 73.780136 75.252243 0 0 1 178.09352 149.64926 L 178.08939 149.80223 A 73.780136 75.252243 0 0 1 102.37566 222.98949 A 73.780136 75.252243 0 0 1 30.558341 148.31601 L 30.546456 148.31601 L 30.546456 86.855164 L 30.926794 86.855164 A 73.596848 75.437004 0 0 1 30.948499 85.624231 A 73.596848 75.437004 0 0 1 106.40177 12.178585 z " />
+  </g>
+</svg>

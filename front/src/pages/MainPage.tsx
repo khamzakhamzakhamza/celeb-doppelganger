@@ -1,6 +1,6 @@
 import './MainPage.scss';
-import { Title } from "../components/Title";
-import { MirrorFrame } from "../components/MirrorFrame";
+import { Title } from '../components/Title';
+import { MirrorFrame } from '../components/MirrorFrame';
 
 export function MainPage() {
   return (
