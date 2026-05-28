@@ -1,0 +1,17 @@
+.main-page {
+  background: radial-gradient(circle at center, #151b2c 0%, #0b101c 55%, #060a12 100%);
+
+  &__content {
+    max-width: 760px;
+    
+    &--container {
+      min-height: 100dvh;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #dce7ff;
+    }
+  }
+}
