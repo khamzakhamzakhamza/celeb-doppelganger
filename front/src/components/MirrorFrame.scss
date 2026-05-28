@@ -24,18 +24,32 @@
     }
   }
 
-  &__silhouette {
-    position: absolute;
-    left: 0;
-    z-index: 10;
-    width: 100%
-  }
-
   &__video {
     width: 80%;
     aspect-ratio: 3 / 4;
     border-radius: 8px;
     overflow: hidden;
-    position: relative;
+  }
+
+  &__controls {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  &__button {
+    border-radius: 50%;
+    cursor: pointer;
+    height: 100px;
+    background-color: #EEAC31;
+    color: #FFFFFF;
+    font-family: 'Irish Grover', cursive;
+    box-shadow: 0 0 0 10px #CD9D0055, 0 8px 22px rgba(0, 0, 0, 0.35);
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+
+    &--disabled {
+      cursor: default;
+    }
   }
 }

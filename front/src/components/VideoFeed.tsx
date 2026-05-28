@@ -1,81 +1,72 @@
+import './VideoFeed.scss';
 import { useEffect, useRef, useState } from "react";
+import silhouette from  "../assets/silhouette.svg";
 
-export function VideoFeed() {
+type VideoFeedProps = {
+  displayFeed: boolean;
+  feedStartedLoading: () => void;
+  feedFinishedLoading: () => void;
+};
+
+export function VideoFeed({ displayFeed, feedStartedLoading, feedFinishedLoading } : VideoFeedProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let mounted = true;
-    let stream: MediaStream | null = null;
+    if (!displayFeed) return;
 
-    navigator.mediaDevices
-      .getUserMedia({
-        video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
-        audio: false,
-      })
-      .then((mediaStream) => {
-        if (!mounted) {
-          mediaStream.getTracks().forEach((track) => track.stop());
-          return;
-        }
-        stream = mediaStream;
-        const video = videoRef.current;
-        if (video) {
-          video.srcObject = mediaStream;
-          void video.play().catch(() => {
-            if (mounted) setError("Could not start video playback");
-          });
-        }
-      })
-      .catch(() => {
-        if (mounted) {
-          setError("Camera unavailable");
-        }
-      });
+    feedStartedLoading();
 
-    return () => {
-      mounted = false;
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
-      }
-    };
-  }, []);
+    if (!streamRef.current) {
+      navigator.mediaDevices
+        .getUserMedia({
+          video: { facingMode: "user", width: { ideal: 1920 }, height: { ideal: 1080 } },
+          audio: false,
+        })
+        .then((stream) => {
+          streamRef.current = stream;
+          videoRef.current!.srcObject = streamRef.current;
+          void videoRef.current!.play()
+            .then(() => feedFinishedLoading())
+            .catch(() => {
+              setError("Could not start video feed :(\nPlease check permissions or try different browser.");
+            });
+        })
+        .catch(() => {
+          setError("Could not find a camera :(\nPlease check permissions or try different device.");
+        });
+    } else {      
+      videoRef.current!.srcObject = streamRef.current;
+      void videoRef.current!.play()
+        .then(() => feedFinishedLoading())
+        .catch(() => {
+          setError("Could not start video feed :(\nPlease check permissions or try different browser.");
+        });
+    }
+  }, [displayFeed]);
 
-  return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-      }}
-    >
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        playsInline
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          display: "block",
-        }}
-      />
-      {error ? (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "grid",
-            placeItems: "center",
-            color: "#dce7ff",
-            background: "rgba(0, 0, 0, 0.65)",
-            fontSize: "0.95rem",
-          }}
-        >
-          {error}
-        </div>
-      ) : null}
-    </div>
-  );
+  return <>{error 
+    ? (<div className="video-feed">
+      <p>{error}</p>
+    </div>)
+    : displayFeed
+      ? (<div className="video-feed">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            className="video-feed__video"
+          />
+          <img
+            className="video-feed__silhouette"
+            key='silhouette'
+            src={silhouette}
+          />
+        </div>)
+      : (<div className="video-feed">
+        <p>Spaceholder for a nice instruction on how this thing will work</p>
+      </div>)
+  }</>;
 }
