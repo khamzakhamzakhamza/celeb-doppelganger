@@ -1,8 +1,7 @@
 import os
 import boto3
 from collections.abc import Iterator
-from botocore.exceptions import ClientError
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
 router = APIRouter(tags=["models"])
@@ -19,7 +18,7 @@ def _iter_s3_body(bucket: str, key: str) -> Iterator[bytes]:
 
 @router.get("/models/arcface.onnx")
 def stream_arcface_model() -> StreamingResponse:
-    bucket, key = os.environ.get("ARCFACE_BUCKET"), os.environ.get("ARCFACE_KEY")
+    bucket, key = str(os.environ.get("ARCFACE_BUCKET")), str(os.environ.get("ARCFACE_KEY"))
 
     return StreamingResponse(
         _iter_s3_body(bucket, key),
@@ -28,4 +27,3 @@ def stream_arcface_model() -> StreamingResponse:
             "Content-Disposition": 'inline; filename="arcface.onnx"',
         },
     )
-
