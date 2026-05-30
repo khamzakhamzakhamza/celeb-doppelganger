@@ -1,12 +1,15 @@
 import './MirrorFrame.scss';
 import { VideoFeed } from "./VideoFeed";
 import lightbulbLeft from "../assets/lightbulb_left.svg";
+import lightbulbLeftLight from "../assets/lightbulb_left_light.svg"
 import lightbulbRight from "../assets/lightbulb_right.svg";
+import lightbulbRightLight from "../assets/lightbulb_right_light.svg";
 import { useState } from 'react';
 
 export function MirrorFrame() {
   const [ displayFeed, setDisplayFeed ] = useState<boolean>(false);
   const [ loadingFeed, setLoadingFeed ] = useState<boolean>(false);
+  const [ faceFound, setFaceFound ] = useState<boolean>(false);
 
   return (
     <div className="mirror-frame">
@@ -14,7 +17,7 @@ export function MirrorFrame() {
         <img
           className="mirror-frame__lightbulb mirror-frame__lightbulb--left"
           key={`left-${topPercent}`}
-          src={lightbulbLeft}
+          src={faceFound ? lightbulbLeftLight : lightbulbLeft}
           style={{
             top: `${topPercent}%`,
           }}
@@ -24,7 +27,7 @@ export function MirrorFrame() {
         <img
           className="mirror-frame__lightbulb mirror-frame__lightbulb--right"
           key={`right-${topPercent}`}
-          src={lightbulbRight}
+          src={faceFound ? lightbulbRightLight : lightbulbRight}
           style={{
             top: `${topPercent}%`,
           }}
@@ -34,7 +37,8 @@ export function MirrorFrame() {
         <VideoFeed 
           displayFeed={displayFeed} 
           feedStartedLoading={() => setLoadingFeed(true)}
-          feedFinishedLoading={() => setLoadingFeed(false)}/>
+          feedFinishedLoading={() => setLoadingFeed(false)}
+          faceDetected={(detected) => setFaceFound(detected)}/>
       </div>
       <div className='mirror-frame__controls'>
         <button disabled={loadingFeed}

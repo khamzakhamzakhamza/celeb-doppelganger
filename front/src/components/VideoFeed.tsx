@@ -1,22 +1,59 @@
 import './VideoFeed.scss';
 import { useEffect, useRef, useState } from "react";
 import silhouette from  "../assets/silhouette.svg";
+import * as faceapi from "face-api.js";
 
 type VideoFeedProps = {
   displayFeed: boolean;
   feedStartedLoading: () => void;
   feedFinishedLoading: () => void;
+  faceDetected: (detected: boolean) => void;
 };
 
-export function VideoFeed({ displayFeed, feedStartedLoading, feedFinishedLoading } : VideoFeedProps) {
+export function VideoFeed({ displayFeed, feedStartedLoading, feedFinishedLoading, faceDetected } : VideoFeedProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const detecIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [modelLoaded, setModelLoaded] = useState<boolean>(false);
+  const [feedLoaded, setFeedLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    faceapi.nets.ssdMobilenetv1.loadFromUri('/models')
+      .then(() => setModelLoaded(true))
+  }, []);
+
+  useEffect(() => {
+    const cleanUp = () => {
+      if (detecIntervalRef.current) clearInterval(detecIntervalRef.current);
+      faceDetected(false);
+    }
+
+    if (!modelLoaded || !displayFeed || !feedLoaded) {
+      cleanUp()
+      return;
+    }
+    
+    const intervalTime = 500;
+
+    cleanUp();
+    detecIntervalRef.current = setInterval(() => {
+      faceapi.detectSingleFace(videoRef.current!)
+        .then((detection) => {
+          faceDetected(detection != undefined);
+          console.log(detection);
+          return detection;
+        });
+    }, intervalTime);
+
+    return (() => cleanUp());
+  }, [modelLoaded, displayFeed, feedLoaded])
 
   useEffect(() => {
     if (!displayFeed) return;
 
     feedStartedLoading();
+    setFeedLoaded(false);
 
     if (!streamRef.current) {
       navigator.mediaDevices
@@ -28,7 +65,10 @@ export function VideoFeed({ displayFeed, feedStartedLoading, feedFinishedLoading
           streamRef.current = stream;
           videoRef.current!.srcObject = streamRef.current;
           void videoRef.current!.play()
-            .then(() => feedFinishedLoading())
+            .then(() => {
+              feedFinishedLoading();
+              setFeedLoaded(true);
+            })
             .catch(() => {
               setError("Could not start video feed :(\nPlease check permissions or try different browser.");
             });
@@ -39,7 +79,10 @@ export function VideoFeed({ displayFeed, feedStartedLoading, feedFinishedLoading
     } else {      
       videoRef.current!.srcObject = streamRef.current;
       void videoRef.current!.play()
-        .then(() => feedFinishedLoading())
+        .then(() => {
+          feedFinishedLoading();
+          setFeedLoaded(true);
+        })
         .catch(() => {
           setError("Could not start video feed :(\nPlease check permissions or try different browser.");
         });
