@@ -52,4 +52,9 @@
       cursor: default;
     }
   }
+
+  &__photo {
+    width: 100px;
+    border-radius: 8px;
+  }
 }
