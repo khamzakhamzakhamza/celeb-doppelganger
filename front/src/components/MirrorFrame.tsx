@@ -12,7 +12,7 @@ import { PhotosPreview } from './PhotosPreview';
 const arcfaceService = new ArcfaceService();
 
 export function MirrorFrame() {
-  const numOfPhotos = 5;
+  const numOfPhotos = 4;
   const videoFeedRef = useRef<VideoFeedHandle>(null);
   const { modelBytes } = useArcfaceModel();
 
@@ -43,7 +43,7 @@ export function MirrorFrame() {
     return !displayFeed ? 'Start Camera' : 
       photos.length < numOfPhotos ? 'Take Picture' : 'Get doupleganger';
   };
-  
+
   return (
     <div className="mirror-frame">
       {[3, 20, 37, 54, 73].map((topPercent) => (
@@ -79,8 +79,8 @@ export function MirrorFrame() {
           onClick={processClick}>
           {getButtonText()}
         </button>
+        <PhotosPreview photos={photos}/>
       </div>
-      <PhotosPreview photos={photos}/>
     </div>
   );
 }

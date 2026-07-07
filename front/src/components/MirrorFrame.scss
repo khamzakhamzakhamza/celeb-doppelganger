@@ -32,11 +32,20 @@
   }
 
   &__controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
     width: 100%;
     padding: 0.8rem;
+
+    .photos-preview {
+      grid-column: 3;
+      justify-self: end;
+    }
   }
 
   &__button {
+    grid-column: 2;
     border-radius: 50%;
     cursor: pointer;
     height: 100px;
