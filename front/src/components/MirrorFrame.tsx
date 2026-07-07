@@ -5,9 +5,16 @@ import lightbulbLeftLight from "../assets/lightbulb_left_light.svg"
 import lightbulbRight from "../assets/lightbulb_right.svg";
 import lightbulbRightLight from "../assets/lightbulb_right_light.svg";
 import { useRef, useState } from 'react';
+import { ArcfaceService } from '../services/arcfaceService';
+import { useArcfaceModel } from '../providers/ArcfaceModelProvider';
+import { PhotosPreview } from './PhotosPreview';
+
+const arcfaceService = new ArcfaceService();
 
 export function MirrorFrame() {
+  const numOfPhotos = 5;
   const videoFeedRef = useRef<VideoFeedHandle>(null);
+  const { modelBytes } = useArcfaceModel();
 
   const [ displayFeed, setDisplayFeed ] = useState<boolean>(false);
   const [ loadingFeed, setLoadingFeed ] = useState<boolean>(false);
@@ -16,18 +23,27 @@ export function MirrorFrame() {
 
   const processClick = async () => {
     if (displayFeed) {
-        const photo = await videoFeedRef.current?.capturePhoto();
-        if (!photo) return;
-        
-        setPhotos([...photos, photo]);
-        console.log(photo);
+        if (photos.length < numOfPhotos) {
+          const photo = await videoFeedRef.current?.capturePhoto();
+          if (!photo) return;
+          
+          setPhotos([...photos, photo]);
+        }
+        else {
+          let embd = await arcfaceService.buildEmbeddingFromBlobs(photos, modelBytes!);
+          let res = await arcfaceService.search(embd);
+          console.log(res, embd);
+        }
     } else {
       setDisplayFeed(!displayFeed);
     }
   };
 
-  const getPhotoUrl = (index: number) => photos[index] ?  URL.createObjectURL(photos[index]) : undefined;
-
+  const getButtonText = () => {
+    return !displayFeed ? 'Start Camera' : 
+      photos.length < numOfPhotos ? 'Take Picture' : 'Get doupleganger';
+  };
+  
   return (
     <div className="mirror-frame">
       {[3, 20, 37, 54, 73].map((topPercent) => (
@@ -61,14 +77,10 @@ export function MirrorFrame() {
         <button disabled={loadingFeed || displayFeed && !faceFound}
           className={`mirror-frame__button ${loadingFeed ? 'mirror-frame__button--disabled' : null}`}
           onClick={processClick}>
-          {!displayFeed ? 'Start Camera' : 'Take Picture'}
+          {getButtonText()}
         </button>
-        <img className='mirror-frame__photo' src={getPhotoUrl(0)}/>
-        <img className='mirror-frame__photo' src={getPhotoUrl(1)}/>
-        <img className='mirror-frame__photo' src={getPhotoUrl(2)}/>
-        <img className='mirror-frame__photo' src={getPhotoUrl(3)}/>
-        <img className='mirror-frame__photo' src={getPhotoUrl(4)}/>
       </div>
+      <PhotosPreview photos={photos}/>
     </div>
   );
 }

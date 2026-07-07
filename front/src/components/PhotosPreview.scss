@@ -1,0 +1,18 @@
+.photos-preview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  &__photo {
+    position: relative;
+    width: 72px;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    object-fit: cover;
+
+    &:not(:first-child) {
+      margin-left: -36px;
+    }
+  }
+}
